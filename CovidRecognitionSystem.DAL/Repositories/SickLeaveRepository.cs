@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CovidRecognitionSystem.DAL.Models
+namespace CovidRecognitionSystem.DAL.Repositories
 {
-    public enum PatientStatus
+    internal class SickLeaveRepository
     {
-        Healthy,
-        Ill,
-        Dead,
     }
 }

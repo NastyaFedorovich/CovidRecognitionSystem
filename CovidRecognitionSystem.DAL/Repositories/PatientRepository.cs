@@ -6,9 +6,9 @@ namespace CovidRecognitionSystem.DAL.Repositories
 {
     public class PatientRepository : IPatientRepository
     {
-        private PatientDatabaseContext _databaseContext;
+        private AppDbContext _databaseContext;
 
-        public PatientRepository(PatientDatabaseContext patientDatabase)
+        public PatientRepository(AppDbContext patientDatabase)
         {
             _databaseContext = patientDatabase;
         }

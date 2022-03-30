@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CovidRecognitionSystem.DAL.Models
+namespace CovidRecognitionSystem.DAL.Repositories.Interfaces
 {
-    public enum PatientStatus
+    internal interface IDiagnosisRepository
     {
-        Healthy,
-        Ill,
-        Dead,
     }
 }
