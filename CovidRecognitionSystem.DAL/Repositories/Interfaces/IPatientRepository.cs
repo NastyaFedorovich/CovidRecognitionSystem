@@ -7,18 +7,8 @@ using System.Threading.Tasks;
 
 namespace CovidRecognitionSystem.DAL.Repositories.Interfaces
 {
-    public interface IPatientRepository
+    public interface IPatientRepository : IRepository<Patient>
     {
-        public Patient Create(Patient patient);
-
-        public Patient GetById(int id);
-
-        public Patient GetBySurname(string surname);
-
-        public List<Patient> GetAll();
-
-        public void Update(Patient patient);
-
-        public void Delete(Patient patient);
+        Patient GetBySurname(string surname);
     }
 }

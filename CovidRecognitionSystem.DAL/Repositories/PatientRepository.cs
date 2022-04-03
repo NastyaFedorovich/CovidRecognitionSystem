@@ -6,58 +6,59 @@ namespace CovidRecognitionSystem.DAL.Repositories
 {
     public class PatientRepository : IPatientRepository
     {
-        private AppDbContext _databaseContext;
+        private AppDbContext _dbContext;
 
-        public PatientRepository(AppDbContext patientDatabase)
+        public PatientRepository(AppDbContext dbContext)
         {
-            _databaseContext = patientDatabase;
+            _dbContext = dbContext;
         }
 
-        public Patient Create(Patient patient)
+        public Patient Create(Patient entity)
         {
-            _databaseContext.Patients.Add(patient);
-            _databaseContext.SaveChanges();
-            return patient;
+            _dbContext.Patients.Add(entity);
+            _dbContext.SaveChanges();
+            return entity;
         }
 
-        public void Delete(Patient patient)
+        public void Delete(Patient entity)
         {
-            var findPatient = _databaseContext.Patients.FirstOrDefault(p => p.Id == patient.Id);
-            if (findPatient != null) 
+            var findPatient = _dbContext.Patients.FirstOrDefault(p => p.Id == entity.Id);
+            if (findPatient != null)
             {
-                _databaseContext.Patients.Remove(findPatient);
-                _databaseContext.SaveChanges();
+                _dbContext.Patients.Remove(findPatient);
+                _dbContext.SaveChanges();
             }
         }
 
         public List<Patient> GetAll()
         {
-            return _databaseContext.Patients.ToList();
+            return _dbContext.Patients.ToList();
         }
 
         public Patient GetById(int id)
         {
-            return _databaseContext.Patients.First(p => p.Id == id);
+            return _dbContext.Patients.First(p => p.Id == id);
         }
 
         public Patient GetBySurname(string surname)
         {
-            return _databaseContext.Patients.First(p => p.Surname == surname);
+            return _dbContext.Patients.First(p => p.Surname == surname);
         }
 
-        public void Update(Patient patient)
+        public void Update(Patient entity)
         {
-            var findPatient = _databaseContext.Patients.FirstOrDefault(p => p.Id == patient.Id);
+            var findPatient = _dbContext.Patients.FirstOrDefault(p => p.Id == entity.Id);
+
             if (findPatient != null)
             {
-                findPatient.Address = patient.Address;
-                findPatient.Surname = patient.Surname;
-                findPatient.DateTime = patient.DateTime;
-                findPatient.MiddleName = patient.MiddleName;
-                findPatient.Name = patient.Name;
+                findPatient.Address = entity.Address;
+                findPatient.Surname = entity.Surname;
+                findPatient.BirthDate = entity.BirthDate;
+                findPatient.MiddleName = entity.MiddleName;
+                findPatient.PatientName = entity.PatientName;
 
-                _databaseContext.Patients.Update(findPatient);
-                _databaseContext.SaveChanges();
+                _dbContext.Patients.Update(findPatient);
+                _dbContext.SaveChanges();
             }
         }
     }

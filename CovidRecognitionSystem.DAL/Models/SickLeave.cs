@@ -15,5 +15,5 @@ namespace CovidRecognitionSystem.DAL.Models
         public PatientStatus Status { get; set; }
 
         public List<Diagnosis> Diagnoses { get; set; }
-    } 
+    }
 }

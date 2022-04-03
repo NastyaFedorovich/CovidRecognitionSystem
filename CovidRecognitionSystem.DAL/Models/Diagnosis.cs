@@ -11,6 +11,7 @@ namespace CovidRecognitionSystem.DAL.Models
         public int Id { get; set; }
 
         public int SickLeaveId { get; set; }
+        public SickLeave SickLeave { get; set; }
 
         public string ComputerDiagnosis { get; set; }
 
