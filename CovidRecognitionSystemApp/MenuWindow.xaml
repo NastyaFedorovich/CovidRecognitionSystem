@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CovidRecognitionSystemApp"
         mc:Ignorable="d"
         Title="MenuWindow" Height="800" Width="1440">
-    
+
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Background" Value="SlateBlue"/>
@@ -16,8 +16,14 @@
             <Setter Property="Foreground" Value="AliceBlue"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
         </Style>
+        <Style TargetType="RadioButton">
+            <Setter Property="Background" Value="SlateBlue"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Margin" Value="0,10,0,0"/>
+            
+        </Style>
     </Window.Resources>
-    
+
     <Grid Background="LightSkyBlue">
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
@@ -31,7 +37,7 @@
                 </Style>
             </Button.Resources>
         </Button>
-        
+
         <Button x:Name="TrackingDataButton" Content="Отслеживание данных пациентов" Margin="0,270,0,0" Click="TrackingDataButton_Click">
             <Button.Resources>
                 <Style TargetType="Border">
@@ -64,15 +70,32 @@
             </Button.Resources>
         </Button>
 
-        <StackPanel x:Name="StartDiagnosticPanel" Grid.Column="1" Background="LightSteelBlue" Visibility="Hidden">
+        <StackPanel x:Name="StartDiagnosticPanel" Background="LightSteelBlue" Visibility="Hidden" Grid.ColumnSpan="2" Margin="714,0,6,0">
+            <Label Content="Диагностика" FontSize="25" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top"/>
+            <TextBlock x:Name="QuestionText" TextWrapping="Wrap" Margin="70 30 70 0" FontSize="18" Text="Question text"/>
+            <StackPanel x:Name="RadioButtonsPanel" Margin="70 20 70 0"/>
+
+            <Label x:Name="CovidChanceLabel" FontSize="20" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+            <Label x:Name="GrippeChanceLabel" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden"/>
+            <Label x:Name="OrviChanceLabel" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden"/>
+            
+            <Button x:Name="NextButton" Content="Следующий вопрос" Margin="0,0,0,0" 
+                    Click="NextButton_Click" Width="220">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
 
         </StackPanel>
+
         <StackPanel x:Name="TrackingDataPanel" Grid.Column="1" Background="LightSteelBlue" Visibility="Hidden">
 
         </StackPanel>
+        
         <StackPanel x:Name="TreatmentPanel" Grid.Column="1" Background="LightSteelBlue" Visibility="Hidden">
-            <Label Content="Лечение" FontSize="25"
-               HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top"/>
+            <Label Content="Лечение" FontSize="25" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top"/>
             <TextBlock TextWrapping="Wrap" Margin="70 30 70 0" FontSize="18">
                 1.	Витамин Д<LineBreak />
 2.	Витамин С<LineBreak />
@@ -87,9 +110,9 @@
 11.	Муколитики
             </TextBlock>
         </StackPanel>
+        
         <StackPanel x:Name="PreventionPanel" Grid.Column="1" Background="LightSteelBlue" Visibility="Hidden">
-            <Label Content="Профилактика" FontSize="25"
-               HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top"/>
+            <Label Content="Профилактика" FontSize="25" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top"/>
             <TextBlock TextWrapping="Wrap" Margin="70 30 70 0" FontSize="18">
                 1.	Прививка <LineBreak />
 2.	Увеличить кол продуктов содержащих витамин С<LineBreak />
@@ -103,7 +126,6 @@
 10.	 Избегать тесных контактов с людьми которые имеют признаки заболевания (чихают и кашляют)<LineBreak />
 11.	В случае появления заболевших гриппом в семье или рабочем коллективе – начать прием противовирусных препаратов с профилактической целью<LineBreak /> 
 12.	 Не прикасаться к лицу
-
             </TextBlock>
         </StackPanel>
     </Grid>

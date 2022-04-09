@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CovidRecognitionSystem.DAL.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,17 @@ namespace CovidRecognitionSystemApp
     /// </summary>
     public partial class MenuWindow : Window
     {
+        private int _questionIndex;
+        private QuestionRepository _questionRepository;
+        private List<RadioButton> _currentButtons;
+
         public MenuWindow()
         {
             InitializeComponent();
+
+            _questionIndex = 0;
+            _questionRepository = new QuestionRepository();
+            _currentButtons = new List<RadioButton>();
         }
 
         private void TrackingDataButton_Click(object sender, RoutedEventArgs e)
@@ -62,6 +71,87 @@ namespace CovidRecognitionSystemApp
             TrackingDataPanel.Visibility = Visibility.Hidden;
             TreatmentPanel.Visibility = Visibility.Hidden;
             PreventionPanel.Visibility = Visibility.Hidden;
+
+            _questionIndex = 0;
+
+            ViewQuestion();
+        }
+
+        private void NextButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (_questionIndex == _questionRepository.Questions.Count - 1)
+                {
+                    NextButton.Content = "Результат";
+                    GetResultFromBtn();
+                }
+                else if (_questionIndex == _questionRepository.Questions.Count)
+                {
+                    GetResultFromBtn();
+
+                    NextButton.Visibility = Visibility.Hidden;
+                    QuestionText.Text = "";
+                    RadioButtonsPanel.Children.Clear();
+
+                    CovidChanceLabel.Content = $"Вероятность ковида: {_questionRepository.CovidBalls}%";
+                    GrippeChanceLabel.Content = $"Вероятность гриппа: {_questionRepository.GrippeBalls}%";
+                    OrviChanceLabel.Content = $"Вероятность ОРВИ: {_questionRepository.OrviBalls}%";
+
+                    CovidChanceLabel.Visibility = Visibility.Visible;
+                    GrippeChanceLabel.Visibility = Visibility.Visible;
+                    OrviChanceLabel.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    GetResultFromBtn();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка!");
+            }
+        }
+
+        private void ViewQuestion()
+        {
+            RadioButtonsPanel.Children.Clear();
+            _currentButtons.Clear();
+
+            QuestionText.Text = _questionRepository.Questions[_questionIndex].Title;
+
+            foreach (var key in _questionRepository.Questions[_questionIndex].AnsverPercentsPair.Keys)
+            {
+                RadioButton radioButton = new RadioButton();
+                radioButton.Content = key;
+                radioButton.VerticalContentAlignment = VerticalAlignment.Center;
+
+                RadioButtonsPanel.Children.Add(radioButton);
+                _currentButtons.Add(radioButton);
+            }
+
+            _questionIndex++;
+        }
+
+        private void GetResultFromBtn()
+        {
+            bool isAnyBtnChecked = false;
+
+            foreach (RadioButton radioButton in _currentButtons)
+            {
+                if (radioButton.IsChecked == true)
+                {
+                    _questionRepository.SetBalls(_questionIndex - 1, radioButton.Content.ToString());
+                    isAnyBtnChecked = true;
+                    break;
+                }
+            }
+
+            if (!isAnyBtnChecked) MessageBox.Show("Вариант ответа не выбран", "Ошибка!");
+            else
+            {
+                if (_questionIndex != _questionRepository.Questions.Count) ViewQuestion();
+            }
         }
     }
 }
