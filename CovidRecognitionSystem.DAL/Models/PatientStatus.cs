@@ -8,8 +8,8 @@ namespace CovidRecognitionSystem.DAL.Models
 {
     public enum PatientStatus
     {
-        Healthy,
-        Ill,
-        Dead,
+        Healthy = 0,
+        Ill = 1,
+        Dead = 2,
     }
 }

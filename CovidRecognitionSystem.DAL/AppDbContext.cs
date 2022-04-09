@@ -27,5 +27,6 @@ namespace CovidRecognitionSystem.DAL
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Diagnosis> Diagnosis { get; set; }
         public DbSet<SickLeave> SickLeaves { get; set; }
+        public DbSet<Doctor> Doctors { get; set; }
     }
 }

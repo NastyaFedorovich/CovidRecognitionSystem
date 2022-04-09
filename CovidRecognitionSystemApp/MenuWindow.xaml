@@ -1,0 +1,110 @@
+﻿<Window x:Class="CovidRecognitionSystemApp.MenuWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CovidRecognitionSystemApp"
+        mc:Ignorable="d"
+        Title="MenuWindow" Height="800" Width="1440">
+    
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="SlateBlue"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="360"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="AliceBlue"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+        </Style>
+    </Window.Resources>
+    
+    <Grid Background="LightSkyBlue">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Button x:Name="StartDiagnosticButton" Content="Начать диагностику" Margin="0,200,0,0" Click="StartDiagnosticButton_Click">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        
+        <Button x:Name="TrackingDataButton" Content="Отслеживание данных пациентов" Margin="0,270,0,0" Click="TrackingDataButton_Click">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+
+        <Button x:Name="TreatmentButton" Content="Лечение" Margin="0,340,0,0" Click="TreatmentButton_Click">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+
+        <Button x:Name="PreventionButton" Content="Профилактика" Margin="0,410,0,0" Click="PreventionButton_Click">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+
+        <Button x:Name="ExitButton" Content="Выход" Margin="0,480,0,0" Click="ExitButton_Click">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+
+        <StackPanel x:Name="StartDiagnosticPanel" Grid.Column="1" Background="LightSteelBlue" Visibility="Hidden">
+
+        </StackPanel>
+        <StackPanel x:Name="TrackingDataPanel" Grid.Column="1" Background="LightSteelBlue" Visibility="Hidden">
+
+        </StackPanel>
+        <StackPanel x:Name="TreatmentPanel" Grid.Column="1" Background="LightSteelBlue" Visibility="Hidden">
+            <Label Content="Лечение" FontSize="25"
+               HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top"/>
+            <TextBlock TextWrapping="Wrap" Margin="70 30 70 0" FontSize="18">
+                1.	Витамин Д<LineBreak />
+2.	Витамин С<LineBreak />
+3.	Цинк<LineBreak /> 
+4.	Обильное теплое питье<LineBreak /> 
+5.	Дыхательная гимнастика<LineBreak /> 
+6.	ПРОН-позиция (лежать на животе)<LineBreak />
+7.	Жаропонижающее<LineBreak /> 
+8.	Противовирусные<LineBreak />
+9.	Антибиотики по назначению врача при подозрении на бактериальную инфекцию<LineBreak /> 
+10.	Антитромботическая терапия<LineBreak /> 
+11.	Муколитики
+            </TextBlock>
+        </StackPanel>
+        <StackPanel x:Name="PreventionPanel" Grid.Column="1" Background="LightSteelBlue" Visibility="Hidden">
+            <Label Content="Профилактика" FontSize="25"
+               HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top"/>
+            <TextBlock TextWrapping="Wrap" Margin="70 30 70 0" FontSize="18">
+                1.	Прививка <LineBreak />
+2.	Увеличить кол продуктов содержащих витамин С<LineBreak />
+3.	Тщательно мыть руки с мылом и обрабатывать антисептиком<LineBreak />
+4.	Промывать полость носа солевым раствором<LineBreak /> 
+5.	Регулярно делать уборку в помещении<LineBreak />
+6.	Здоровый образ жизни<LineBreak />
+7.	Проветривать и увлажнять помещение<LineBreak /> 
+8.	Пользоваться маской в местах скопления людей<LineBreak /> 
+9.	Реже бывать в общественных местах и соблюдать дистанцию<LineBreak />
+10.	 Избегать тесных контактов с людьми которые имеют признаки заболевания (чихают и кашляют)<LineBreak />
+11.	В случае появления заболевших гриппом в семье или рабочем коллективе – начать прием противовирусных препаратов с профилактической целью<LineBreak /> 
+12.	 Не прикасаться к лицу
+
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+</Window>

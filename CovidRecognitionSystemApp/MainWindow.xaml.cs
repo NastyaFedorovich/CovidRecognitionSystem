@@ -34,5 +34,21 @@ namespace CovidRecognitionSystemApp
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private void SignInButton_Click(object sender, RoutedEventArgs e)
+        {
+            SignInWindow signInWindow = new SignInWindow();
+            signInWindow.Show();
+
+            Close();
+        }
+
+        private void SignUpButton_Click(object sender, RoutedEventArgs e)
+        {
+            SignUpWindow signUpWindow = new SignUpWindow();
+            signUpWindow.Show();
+
+            Close();
+        }
     }
 }

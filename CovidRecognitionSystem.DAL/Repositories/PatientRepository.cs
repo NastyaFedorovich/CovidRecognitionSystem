@@ -55,7 +55,7 @@ namespace CovidRecognitionSystem.DAL.Repositories
                 findPatient.Surname = entity.Surname;
                 findPatient.BirthDate = entity.BirthDate;
                 findPatient.MiddleName = entity.MiddleName;
-                findPatient.PatientName = entity.PatientName;
+                findPatient.Name = entity.Name;
 
                 _dbContext.Patients.Update(findPatient);
                 _dbContext.SaveChanges();

@@ -12,7 +12,7 @@ namespace CovidRecognitionSystem.DAL.Models
 
         public int PatientId { get; set; }
 
-        public PatientStatus Status { get; set; }
+        public PatientStatus PatientStatus { get; set; }
 
         public List<Diagnosis> Diagnoses { get; set; }
     }
