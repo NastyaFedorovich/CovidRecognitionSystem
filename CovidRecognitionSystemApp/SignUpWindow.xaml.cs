@@ -1,4 +1,8 @@
-﻿using System;
+﻿using CovidRecognitionSystem.DAL;
+using CovidRecognitionSystem.DAL.Models;
+using CovidRecognitionSystem.DAL.Repositories;
+using CovidRecognitionSystem.DAL.Repositories.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,8 +23,11 @@ namespace CovidRecognitionSystemApp
     /// </summary>
     public partial class SignUpWindow : Window
     {
+        private readonly IDoctorRepository _doctorRepository;
+
         public SignUpWindow()
         {
+            _doctorRepository = new DoctorRepository(new AppDbContext());
             InitializeComponent();
         }
 
@@ -34,10 +41,22 @@ namespace CovidRecognitionSystemApp
 
         private void SignUpButton_Click(object sender, RoutedEventArgs e)
         {
-            MenuWindow menuWindow = new MenuWindow();
-            menuWindow.Show();
+            var fullName = FullNameTB.Text;
+            var login = LoginTB.Text;
+            var password = PasswordTB.Text;
 
-            Close();
+            if (_doctorRepository.GetAll().FirstOrDefault(doctor => doctor.Login.Equals(login)) != null)
+            {
+                MessageBox.Show("Пользователь с таким логином уже существует");
+            }
+            else
+            {
+                _doctorRepository.Create(new Doctor { FullName = fullName, Login = login, Password = password });
+
+                var window = new SignInWindow();
+                window.Show();
+                Close();
+            }
         }
     }
 }

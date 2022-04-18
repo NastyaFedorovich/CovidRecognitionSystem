@@ -11,19 +11,29 @@ namespace CovidRecognitionSystem.DAL.Repositories
     public class DiagnosisRepository : IDiagnosisRepository
     {
         private AppDbContext _dbContext;
-
+        /// <summary>
+        /// Diagnosis Repository
+        /// </summary>
+        /// <param name="dbContext"></param>
         public DiagnosisRepository(AppDbContext dbContext)
         {
             _dbContext = dbContext;
         }
-
+        /// <summary>
+        ///  Diagnosis Create
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public Diagnosis Create(Diagnosis entity)
         {
             _dbContext.Diagnosis.Add(entity);
             _dbContext.SaveChanges();
             return entity;
         }
-
+        /// <summary>
+        /// Delete Diagnosis
+        /// </summary>
+        /// <param name="entity"></param>
         public void Delete(Diagnosis entity)
         {
             var findDiagnosis = _dbContext.Diagnosis.FirstOrDefault(d => d.Id == entity.Id);
@@ -33,17 +43,27 @@ namespace CovidRecognitionSystem.DAL.Repositories
                 _dbContext.SaveChanges();
             }
         }
-
+        /// <summary>
+        /// Get Diagnosis
+        /// </summary>
+        /// <returns></returns>
         public List<Diagnosis> GetAll()
         {
             return _dbContext.Diagnosis.ToList();
         }
-
+        /// <summary>
+        /// Get By Id Diagnosis
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public Diagnosis GetById(int id)
         {
             return _dbContext.Diagnosis.First(d => d.Id == id);
         }
-
+        /// <summary>
+        /// Update Diagnosis
+        /// </summary>
+        /// <param name="entity"></param>
         public void Update(Diagnosis entity)
         {
             var findDiagnosis = _dbContext.Diagnosis.FirstOrDefault(d => d.Id == entity.Id);

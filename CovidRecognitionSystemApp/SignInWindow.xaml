@@ -23,12 +23,12 @@
 
         <Label Content="Логин" FontSize="20"
                HorizontalAlignment="Left" Margin="70,195,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Center" Margin="50,200,0,0" TextWrapping="Wrap" 
+        <TextBox Name="LoginTB"  HorizontalAlignment="Center" Margin="50,200,0,0" TextWrapping="Wrap" 
                Text="" VerticalAlignment="Top" Width="350" FontSize="20"/>
 
         <Label Content="Пароль" FontSize="20"
                HorizontalAlignment="Left" Margin="62,245,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Center" Margin="50,250,0,0" TextWrapping="Wrap" 
+        <TextBox Name="PasswordTB" HorizontalAlignment="Center" Margin="50,250,0,0" TextWrapping="Wrap" 
                Text="" VerticalAlignment="Top" Width="350" FontSize="20"/>
 
         <Button x:Name="BackButton" Content="Назад" Margin="0,330,0,0" Click="BackButton_Click">

@@ -22,17 +22,17 @@
         
         <Label Content="ФИО" FontSize="20"
                HorizontalAlignment="Left" Margin="80,195,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Center" Margin="50,200,0,0" TextWrapping="Wrap" 
+        <TextBox Name="FullNameTB" HorizontalAlignment="Center" Margin="50,200,0,0" TextWrapping="Wrap" 
                Text="" VerticalAlignment="Top" Width="350" FontSize="20"/>
         
         <Label Content="Логин" FontSize="20"
                HorizontalAlignment="Left" Margin="70,245,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Center" Margin="50,250,0,0" TextWrapping="Wrap" 
+        <TextBox Name="LoginTB" HorizontalAlignment="Center" Margin="50,250,0,0" TextWrapping="Wrap" 
                Text="" VerticalAlignment="Top" Width="350" FontSize="20"/>
 
         <Label Content="Пароль" FontSize="20"
                HorizontalAlignment="Left" Margin="62,295,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Center" Margin="50,300,0,0" TextWrapping="Wrap" 
+        <TextBox x:Name="PasswordTB" HorizontalAlignment="Center" Margin="50,300,0,0" TextWrapping="Wrap" 
                Text="" VerticalAlignment="Top" Width="350" FontSize="20"/>
 
         <Button x:Name="BackButton" Content="Назад" Margin="0,360,0,0" Width="140" Click="BackButton_Click">

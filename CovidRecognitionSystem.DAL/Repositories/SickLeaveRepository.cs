@@ -11,19 +11,29 @@ namespace CovidRecognitionSystem.DAL.Repositories
     public class SickLeaveRepository : ISickLeaveRepository
     {
         private AppDbContext _dbContext;
-
+        /// <summary>
+        /// SickLeave Repository
+        /// </summary>
+        /// <param name="dbContext"></param>
         public SickLeaveRepository(AppDbContext dbContext)
         {
             _dbContext = dbContext;
         }
-
+        /// <summary>
+        /// Create SickLeave
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public SickLeave Create(SickLeave entity)
         {
             _dbContext.SickLeaves.Add(entity);
             _dbContext.SaveChanges();
             return entity;
         }
-
+        /// <summary>
+        /// Delete SickLeave
+        /// </summary>
+        /// <param name="entity"></param>
         public void Delete(SickLeave entity)
         {
             var findSickLeave = _dbContext.SickLeaves.FirstOrDefault(sl => sl.Id == entity.Id);
@@ -33,17 +43,27 @@ namespace CovidRecognitionSystem.DAL.Repositories
                 _dbContext.SaveChanges();
             }
         }
-
+        /// <summary>
+        /// Get SickLeave
+        /// </summary>
+        /// <returns></returns>
         public List<SickLeave> GetAll()
         {
             return _dbContext.SickLeaves.ToList();
         }
-
+        /// <summary>
+        /// Get By Id SickLeave
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public SickLeave GetById(int id)
         {
             return _dbContext.SickLeaves.First(d => d.Id == id);
         }
-
+        /// <summary>
+        /// Update
+        /// </summary>
+        /// <param name="entity"></param>
         public void Update(SickLeave entity)
         {
             var findSickLeave = _dbContext.SickLeaves.FirstOrDefault(sl => sl.Id == entity.Id);

@@ -39,6 +39,7 @@ namespace CovidRecognitionSystemApp
             TrackingDataPanel.Visibility = Visibility.Visible;
             TreatmentPanel.Visibility = Visibility.Hidden;
             PreventionPanel.Visibility = Visibility.Hidden;
+            FonImg.Visibility = Visibility.Hidden;
         }
 
         private void TreatmentButton_Click(object sender, RoutedEventArgs e)
@@ -47,6 +48,7 @@ namespace CovidRecognitionSystemApp
             TrackingDataPanel.Visibility = Visibility.Hidden;
             TreatmentPanel.Visibility = Visibility.Visible;
             PreventionPanel.Visibility = Visibility.Hidden;
+            FonImg.Visibility = Visibility.Hidden;
         }
 
         private void PreventionButton_Click(object sender, RoutedEventArgs e)
@@ -55,6 +57,7 @@ namespace CovidRecognitionSystemApp
             TrackingDataPanel.Visibility = Visibility.Hidden;
             TreatmentPanel.Visibility = Visibility.Hidden;
             PreventionPanel.Visibility = Visibility.Visible;
+            FonImg.Visibility = Visibility.Hidden;
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
@@ -71,6 +74,7 @@ namespace CovidRecognitionSystemApp
             TrackingDataPanel.Visibility = Visibility.Hidden;
             TreatmentPanel.Visibility = Visibility.Hidden;
             PreventionPanel.Visibility = Visibility.Hidden;
+            FonImg.Visibility = Visibility.Hidden;
 
             _questionIndex = 0;
 
@@ -94,9 +98,9 @@ namespace CovidRecognitionSystemApp
                     QuestionText.Text = "";
                     RadioButtonsPanel.Children.Clear();
 
-                    CovidChanceLabel.Content = $"Вероятность ковида: {_questionRepository.CovidBalls}%";
-                    GrippeChanceLabel.Content = $"Вероятность гриппа: {_questionRepository.GrippeBalls}%";
-                    OrviChanceLabel.Content = $"Вероятность ОРВИ: {_questionRepository.OrviBalls}%";
+                    CovidChanceLabel.Content = $"Вероятность ковида: {_questionRepository.GetCovidChance()}%";
+                    GrippeChanceLabel.Content = $"Вероятность гриппа: {_questionRepository.GetGrippeChance()}%";
+                    OrviChanceLabel.Content = $"Вероятность ОРВИ: {_questionRepository.GetOrviChance()}%";
 
                     CovidChanceLabel.Visibility = Visibility.Visible;
                     GrippeChanceLabel.Visibility = Visibility.Visible;

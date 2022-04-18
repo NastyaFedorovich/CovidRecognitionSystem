@@ -9,23 +9,36 @@ namespace CovidRecognitionSystem.DAL.Repositories
 {
     public class QuestionRepository
     {
-        public int CovidBalls { get; private set; } = 0;
-        public int GrippeBalls { get; private set; } = 0;
-        public int OrviBalls { get; private set; } = 0;
+        private const int CovidIndex = 2;
+        private const int GrippeIndex = 1;
+        private const int OrviIndex = 0;
 
+        private double _covidBalls = 0;
+        private double _grippeBalls = 0;
+        private double _orviBalls = 0;
+
+        /// <summary>
+        /// Set Balls
+        /// </summary>
+        /// <param name="qIndex"></param>
+        /// <param name="key"></param>
         public void SetBalls(int qIndex, string key)
         {
             if (qIndex == 0)
             {
-                CovidBalls = 0;
-                GrippeBalls = 0;
-                OrviBalls = 0;
+                _covidBalls = 0;
+                _grippeBalls = 0;
+                _orviBalls = 0;
             }
 
-            CovidBalls += Questions[qIndex].AnsverPercentsPair[key][0];
-            GrippeBalls += Questions[qIndex].AnsverPercentsPair[key][1];
-            OrviBalls += Questions[qIndex].AnsverPercentsPair[key][2];
+            _covidBalls += Questions[qIndex].AnsverPercentsPair[key][CovidIndex];
+            _grippeBalls += Questions[qIndex].AnsverPercentsPair[key][GrippeIndex];
+            _orviBalls += Questions[qIndex].AnsverPercentsPair[key][OrviIndex];
         }
+
+        public double GetCovidChance() => Math.Round(_covidBalls / Questions.Count, 2);
+        public double GetGrippeChance() => Math.Round(_grippeBalls / Questions.Count, 2);
+        public double GetOrviChance() => Math.Round(_orviBalls / Questions.Count, 2);
 
         public List<Question> Questions { get; } = new List<Question>
         {

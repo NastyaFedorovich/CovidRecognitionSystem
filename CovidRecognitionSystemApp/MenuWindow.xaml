@@ -128,5 +128,8 @@
 12.	 Не прикасаться к лицу
             </TextBlock>
         </StackPanel>
+
+        <Image Grid.Column="1" HorizontalAlignment="Left" Height="800" VerticalAlignment="Top" Width="720" 
+               Name="FonImg" Source="/fon.png" Visibility="Visible" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>

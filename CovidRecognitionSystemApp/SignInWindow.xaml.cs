@@ -1,4 +1,7 @@
-﻿using System;
+﻿using CovidRecognitionSystem.DAL;
+using CovidRecognitionSystem.DAL.Repositories;
+using CovidRecognitionSystem.DAL.Repositories.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,8 +22,11 @@ namespace CovidRecognitionSystemApp
     /// </summary>
     public partial class SignInWindow : Window
     {
+        private readonly IDoctorRepository _doctorRepository;
+
         public SignInWindow()
         {
+            _doctorRepository = new DoctorRepository(new AppDbContext());
             InitializeComponent();
         }
 
@@ -34,10 +40,21 @@ namespace CovidRecognitionSystemApp
 
         private void SignInButton_Click(object sender, RoutedEventArgs e)
         {
-            MenuWindow menuWindow = new MenuWindow();
-            menuWindow.Show();
+            var login = LoginTB.Text;
+            var password = PasswordTB.Text; 
 
-            Close();
+            var user = _doctorRepository.GetAll().FirstOrDefault(doctor => doctor.Login.Equals(login) && doctor.Password.Equals(password));
+
+            if (user != null)
+            {
+                MenuWindow menuWindow = new MenuWindow();
+                menuWindow.Show();
+                Close();
+            }
+            else
+            {
+                MessageBox.Show("Неверный логин или пароль");
+            }
         }
     }
 }

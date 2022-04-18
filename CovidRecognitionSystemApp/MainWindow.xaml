@@ -15,18 +15,19 @@
             <Setter Property="Foreground" Value="AliceBlue"/>
         </Style>
     </Window.Resources>
-    
+
     <Grid Background="LightSkyBlue">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="144*"></ColumnDefinition>
+            <ColumnDefinition Width="53*"></ColumnDefinition>
+            <ColumnDefinition Width="91*"/>
         </Grid.ColumnDefinitions>
         <StackPanel>
             <Label Content="Информационная система врача" FontSize="23"
                HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top"/>
             <Label Content="терапевта для учёта заболеваний пациентов" FontSize="23"
                HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Top"/>
-            
+
             <Button x:Name="SignInButton" Content="Войти" Margin="0,170,0,0" Background="Crimson" Click="SignInButton_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
@@ -42,5 +43,6 @@
                 </Button.Resources>
             </Button>
         </StackPanel>
+        <Image Grid.Column="1" HorizontalAlignment="Left" Height="800" VerticalAlignment="Top" Width="720" Source="/fon.png" Visibility="Visible" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>
