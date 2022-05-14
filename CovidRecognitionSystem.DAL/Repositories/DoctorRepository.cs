@@ -26,6 +26,9 @@ namespace CovidRecognitionSystem.DAL.Repositories
         /// <returns></returns>
         public Doctor Create(Doctor entity)
         {
+            if (GetAll().Select(d => d.Login).Contains(entity.Login))
+                throw new Exception("Пользователь с таким логином уже существует");
+
             _dbContext.Doctors.Add(entity);
             _dbContext.SaveChanges();
             return entity;

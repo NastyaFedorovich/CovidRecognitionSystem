@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CovidRecognitionSystem.DAL;
+using CovidRecognitionSystem.DAL.Repositories;
+using CovidRecognitionSystem.DAL.Repositories.Interfaces;
 
 namespace CovidRecognitionSystemApp
 {
@@ -22,12 +24,14 @@ namespace CovidRecognitionSystemApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly IUnitOfWork _unitOfWork;
         public MainWindow()
         {
             InitializeComponent();
             try
             {
                 AppDbContext dbContext = new AppDbContext();
+                _unitOfWork = new UnitOfWork(dbContext);
             }
             catch (Exception ex)
             {
@@ -37,7 +41,7 @@ namespace CovidRecognitionSystemApp
 
         private void SignInButton_Click(object sender, RoutedEventArgs e)
         {
-            SignInWindow signInWindow = new SignInWindow();
+            SignInWindow signInWindow = new SignInWindow(_unitOfWork);
             signInWindow.Show();
 
             Close();
@@ -45,7 +49,7 @@ namespace CovidRecognitionSystemApp
 
         private void SignUpButton_Click(object sender, RoutedEventArgs e)
         {
-            SignUpWindow signUpWindow = new SignUpWindow();
+            SignUpWindow signUpWindow = new SignUpWindow(_unitOfWork);
             signUpWindow.Show();
 
             Close();

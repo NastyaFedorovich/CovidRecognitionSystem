@@ -1,4 +1,7 @@
-﻿using CovidRecognitionSystem.DAL.Repositories;
+﻿using CovidRecognitionSystem.DAL;
+using CovidRecognitionSystem.DAL.Models;
+using CovidRecognitionSystem.DAL.Repositories;
+using CovidRecognitionSystem.DAL.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,25 +24,57 @@ namespace CovidRecognitionSystemApp
     public partial class MenuWindow : Window
     {
         private int _questionIndex;
-        private QuestionRepository _questionRepository;
+        private Patient _patient;
+
+        QuestionRepository _questionRepository;
+        IUnitOfWork _unitOfWork;
+
         private List<RadioButton> _currentButtons;
 
-        public MenuWindow()
+        public MenuWindow(IUnitOfWork unitOfWork)
         {
             InitializeComponent();
 
             _questionIndex = 0;
             _questionRepository = new QuestionRepository();
+
+            _unitOfWork = unitOfWork;
+
             _currentButtons = new List<RadioButton>();
         }
 
         private void TrackingDataButton_Click(object sender, RoutedEventArgs e)
         {
-            StartDiagnosticPanel.Visibility = Visibility.Hidden;
-            TrackingDataPanel.Visibility = Visibility.Visible;
-            TreatmentPanel.Visibility = Visibility.Hidden;
-            PreventionPanel.Visibility = Visibility.Hidden;
-            FonImg.Visibility = Visibility.Hidden;
+            EnterPatientWindow enterPatientWindow = new EnterPatientWindow(_unitOfWork, this, true);
+            if (enterPatientWindow.ShowDialog() == true)
+            {
+                StartDiagnosticPanel.Visibility = Visibility.Hidden;
+                TrackingDataPanel.Visibility = Visibility.Visible;
+                TreatmentPanel.Visibility = Visibility.Hidden;
+                PreventionPanel.Visibility = Visibility.Hidden;
+                FonImg.Visibility = Visibility.Hidden;
+            }
+        }
+
+        public void AddTrackingData(Patient patient)
+        {
+            try
+            {
+                _patient = patient;
+
+                SickLeave sickLeave = _unitOfWork.SickLeaveRepository.GetAll().FirstOrDefault(s => s.PatientId == patient.Id);
+                Diagnosis diagnosis = _unitOfWork.DiagnosisRepository.GetAll().FirstOrDefault(d => d.SickLeaveId == sickLeave.Id);
+
+                FioLabel.Content += $"{patient.Surname} {patient.Name} {patient.MiddleName}";
+                BirthDateLabel.Content += patient.BirthDate.ToString("d");
+                DoctorDiagnosisLabel.Content += Service.GetDiseaseName(diagnosis.DoctorDiagnosis);
+                ComputerDiagnosisLabel.Content += Service.GetDiseaseName(diagnosis.ComputerDiagnosis);
+                PatientConditionLabel.Content += Service.GetPatientStatusName(sickLeave.PatientStatus);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void TreatmentButton_Click(object sender, RoutedEventArgs e)
@@ -62,6 +97,8 @@ namespace CovidRecognitionSystemApp
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
+            _unitOfWork.AuthManager.SignOut();
+
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
 
@@ -70,15 +107,19 @@ namespace CovidRecognitionSystemApp
 
         private void StartDiagnosticButton_Click(object sender, RoutedEventArgs e)
         {
-            StartDiagnosticPanel.Visibility = Visibility.Visible;
-            TrackingDataPanel.Visibility = Visibility.Hidden;
-            TreatmentPanel.Visibility = Visibility.Hidden;
-            PreventionPanel.Visibility = Visibility.Hidden;
-            FonImg.Visibility = Visibility.Hidden;
+            EnterPatientWindow enterPatientWindow = new EnterPatientWindow(_unitOfWork, this);
+            if (enterPatientWindow.ShowDialog() == true)
+            {
+                StartDiagnosticPanel.Visibility = Visibility.Visible;
+                TrackingDataPanel.Visibility = Visibility.Hidden;
+                TreatmentPanel.Visibility = Visibility.Hidden;
+                PreventionPanel.Visibility = Visibility.Hidden;
+                FonImg.Visibility = Visibility.Hidden;
 
-            _questionIndex = 0;
+                _questionIndex = 0;
 
-            ViewQuestion();
+                ViewQuestion();
+            }
         }
 
         private void NextButton_Click(object sender, RoutedEventArgs e)
@@ -155,6 +196,30 @@ namespace CovidRecognitionSystemApp
             else
             {
                 if (_questionIndex != _questionRepository.Questions.Count) ViewQuestion();
+            }
+        }
+
+        private void SaveCommentButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (DoctorCommentTextBox.Text == "")
+                    throw new Exception("Комментарий не должен быть пустым!");
+
+                _unitOfWork.CommentRepository.Create(new DoctorComment
+                {
+                    DoctorId = _unitOfWork.AuthManager.GetSignedInUser().Id,
+                    PatientId = _patient.Id,
+                    CommentDateTime = DateTime.Now,
+                    Text = DoctorCommentTextBox.Text,
+                });
+
+                MessageBox.Show("Комментарий добавлен!");
+                DoctorCommentTextBox.Text = "";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
     }

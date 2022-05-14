@@ -91,7 +91,26 @@
         </StackPanel>
 
         <StackPanel x:Name="TrackingDataPanel" Grid.Column="1" Background="LightSteelBlue" Visibility="Hidden">
+            <Label Content="Отслеживание данных пациента" FontSize="25" HorizontalAlignment="Center" Margin="0,60,0,0" VerticalAlignment="Top"/>
 
+            <Label x:Name="FioLabel" Content="ФИО пациента: " FontSize="25" Margin="50,40,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="BirthDateLabel" Content="Дата рождения: " FontSize="25" Margin="50,00,0,0" VerticalAlignment="Top"/>
+            
+            <Label x:Name="DoctorDiagnosisLabel" Content="Диагноз врача: " FontSize="25" Margin="50,20,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="ComputerDiagnosisLabel" Content="Диагноз компьютера: " FontSize="25" Margin="50,10,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="PatientConditionLabel" Content="Нынешнее состояние пациента: " FontSize="25" Margin="50,20,0,0" VerticalAlignment="Top"/>
+
+            <Label Content="Комментарий:" FontSize="25" Margin="50,30,0,0" VerticalAlignment="Top"/>
+            <TextBox x:Name="DoctorCommentTextBox" FontSize="25" Margin="50,0,50,0" Height="120"></TextBox>
+
+            <Button x:Name="SaveCommentButton" Content="Сохранить комментарий" Margin="50,30,0,0" 
+                    Click="SaveCommentButton_Click" Width="270" HorizontalAlignment="Left">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
         </StackPanel>
         
         <StackPanel x:Name="TreatmentPanel" Grid.Column="1" Background="LightSteelBlue" Visibility="Hidden">

@@ -15,7 +15,7 @@ namespace CovidRecognitionSystem.DAL.Repositories
         /// Diagnosis Repository
         /// </summary>
         /// <param name="dbContext"></param>
-        public DiagnosisRepository(AppDbContext dbContext)
+        public DiagnosisRepository(AppDbContext dbContext) //конструктор чтобы задавать значенияя свойствам и создавание объекта
         {
             _dbContext = dbContext;
         }
@@ -36,7 +36,7 @@ namespace CovidRecognitionSystem.DAL.Repositories
         /// <param name="entity"></param>
         public void Delete(Diagnosis entity)
         {
-            var findDiagnosis = _dbContext.Diagnosis.FirstOrDefault(d => d.Id == entity.Id);
+            var findDiagnosis = _dbContext.Diagnosis.FirstOrDefault(d => d.Id == entity.Id); // метод который ищет по какому то параметру FirstOrDefault
             if (findDiagnosis != null)
             {
                 _dbContext.Diagnosis.Remove(findDiagnosis);
@@ -70,7 +70,7 @@ namespace CovidRecognitionSystem.DAL.Repositories
 
             if (findDiagnosis != null)
             {
-                findDiagnosis.SickLeaveId = entity.SickLeaveId;
+                findDiagnosis.SickLeaveId = entity.SickLeaveId; //передаем старой сущности новое значение новой сущности
                 findDiagnosis.ComputerDiagnosis = entity.ComputerDiagnosis;
                 findDiagnosis.DoctorDiagnosis = entity.DoctorDiagnosis;
                 findDiagnosis.Date = entity.Date;

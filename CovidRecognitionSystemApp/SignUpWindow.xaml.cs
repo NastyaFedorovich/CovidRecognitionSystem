@@ -23,12 +23,13 @@ namespace CovidRecognitionSystemApp
     /// </summary>
     public partial class SignUpWindow : Window
     {
-        private readonly IDoctorRepository _doctorRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public SignUpWindow()
+        public SignUpWindow(IUnitOfWork unitOfWork)
         {
-            _doctorRepository = new DoctorRepository(new AppDbContext());
             InitializeComponent();
+
+            _unitOfWork = unitOfWork;
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -41,21 +42,18 @@ namespace CovidRecognitionSystemApp
 
         private void SignUpButton_Click(object sender, RoutedEventArgs e)
         {
-            var fullName = FullNameTB.Text;
-            var login = LoginTB.Text;
-            var password = PasswordTB.Text;
-
-            if (_doctorRepository.GetAll().FirstOrDefault(doctor => doctor.Login.Equals(login)) != null)
+            try
             {
-                MessageBox.Show("Пользователь с таким логином уже существует");
+                _unitOfWork.DoctorRepository.Create(new Doctor
+                {
+                    FullName = FullNameTB.Text,
+                    Login = LoginTB.Text,
+                    Password = PasswordTB.Text
+                });
             }
-            else
+            catch (Exception ex)
             {
-                _doctorRepository.Create(new Doctor { FullName = fullName, Login = login, Password = password });
-
-                var window = new SignInWindow();
-                window.Show();
-                Close();
+                MessageBox.Show(ex.Message);
             }
         }
     }

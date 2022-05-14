@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace CovidRecognitionSystem.DAL.Repositories.Interfaces
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository<T> where T : class // тип Т это куча объектов моделей: докторов пациентов и т.д.
     {
-        T Create(T entity);
+        T Create(T entity); //сущностями
 
-        T GetById(int id);
+        T GetById(int id); //объекты типа т
 
         List<T> GetAll();
 

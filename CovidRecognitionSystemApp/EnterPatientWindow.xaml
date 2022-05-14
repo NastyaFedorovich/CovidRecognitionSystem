@@ -1,0 +1,98 @@
+﻿<Window x:Class="CovidRecognitionSystemApp.EnterPatientWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CovidRecognitionSystemApp"
+        mc:Ignorable="d"
+        Title="EnterPatientWindow" Height="700" Width="500">
+
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="SlateBlue"/>
+            <Setter Property="Height" Value="120"/>
+            <Setter Property="Width" Value="400"/>
+            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="Foreground" Value="AliceBlue"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Background="LightSkyBlue">
+        <StackPanel x:Name="ButtonsPanel" Visibility="Visible">
+            <Button x:Name="NewPatientButton" Content="Обследование нового пациента" Margin="0,180,0,0" 
+                    Click="NewPatientButton_Click">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button x:Name="ExistsPatientButton" Content="Переобследование пациента" Margin="0,60,0,0" 
+                    Click="ExistsPatientButton_Click">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </StackPanel>
+
+        <StackPanel x:Name="NewPatientPanel" Visibility="Hidden">
+            <Label Content="Фамилия" FontSize="25" Margin="70,30,0,0" VerticalAlignment="Top"/>
+            <TextBox Name="NewPatientSurnameTextBox"  HorizontalAlignment="Center" TextWrapping="Wrap" 
+               Text="" VerticalAlignment="Top" Width="350" FontSize="25"/>
+
+            <Label Content="Имя" FontSize="25" Margin="70,20,0,0" VerticalAlignment="Top"/>
+            <TextBox Name="NewPatientNameTextBox"  HorizontalAlignment="Center" TextWrapping="Wrap" 
+               Text="" VerticalAlignment="Top" Width="350" FontSize="25"/>
+
+            <Label Content="Отчество" FontSize="25" Margin="70,20,0,0" VerticalAlignment="Top"/>
+            <TextBox Name="NewPatientMiddleNameTextBox"  HorizontalAlignment="Center" TextWrapping="Wrap" 
+               Text="" VerticalAlignment="Top" Width="350" FontSize="25"/>
+
+            <Label Content="Дата рождения (дд.мм.гггг)" FontSize="25" Margin="70,20,0,0" VerticalAlignment="Top"/>
+            <TextBox Name="NewPatientBirthDateTextBox"  HorizontalAlignment="Center" TextWrapping="Wrap" 
+               Text="" VerticalAlignment="Top" Width="350" FontSize="25"/>
+
+            <Label Content="Адрес (город, ул., дом, кв.)" FontSize="25" Margin="70,20,0,0" VerticalAlignment="Top"/>
+            <TextBox Name="PatientAddressTextBox"  HorizontalAlignment="Center" TextWrapping="Wrap" 
+               Text="" VerticalAlignment="Top" Width="350" FontSize="25"/>
+
+            <Button x:Name="NewStartDiagnosticButton" Content="Начать" Margin="0,50,0,0" 
+                    Click="NewStartDiagnosticButton_Click" Width="200" Height="60">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </StackPanel>
+
+        <StackPanel x:Name="ExistsPatientPanel" Visibility="Hidden">
+            <Label Content="Фамилия" FontSize="25" Margin="70,80,0,0" VerticalAlignment="Top"/>
+            <TextBox Name="ExistsPatientSurnameTextBox"  HorizontalAlignment="Center" TextWrapping="Wrap" 
+               Text="" VerticalAlignment="Top" Width="350" FontSize="25"/>
+
+            <Label Content="Имя" FontSize="25" Margin="70,20,0,0" VerticalAlignment="Top"/>
+            <TextBox Name="ExistsPatientNameTextBox"  HorizontalAlignment="Center" TextWrapping="Wrap" 
+               Text="" VerticalAlignment="Top" Width="350" FontSize="25"/>
+
+            <Label Content="Отчество" FontSize="25" Margin="70,20,0,0" VerticalAlignment="Top"/>
+            <TextBox Name="ExistsPatientMiddleNameTextBox"  HorizontalAlignment="Center" TextWrapping="Wrap" 
+               Text="" VerticalAlignment="Top" Width="350" FontSize="25"/>
+
+            <Label Content="Дата рождения (дд.мм.гггг)" FontSize="25" Margin="70,20,0,0" VerticalAlignment="Top"/>
+            <TextBox Name="ExistsPatientBirthDateTextBox"  HorizontalAlignment="Center" TextWrapping="Wrap" 
+               Text="" VerticalAlignment="Top" Width="350" FontSize="25"/>
+
+            <Button x:Name="ExistsStartDiagnosticButton" Content="Начать" Margin="0,50,0,0" 
+                    Click="ExistsStartDiagnosticButton_Click" Width="200" Height="60">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>

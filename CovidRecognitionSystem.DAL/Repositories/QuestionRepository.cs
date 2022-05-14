@@ -9,13 +9,13 @@ namespace CovidRecognitionSystem.DAL.Repositories
 {
     public class QuestionRepository
     {
-        private const int CovidIndex = 2;
-        private const int GrippeIndex = 1;
-        private const int OrviIndex = 0;
+        private const double CovidAddPercent = 7.69; // индексы расположения баллов в списке
+        private const double GrippeAddPercent = 14.28;
+        private const double OrviAddPersent = 11.11;
 
-        private double _covidBalls = 0;
-        private double _grippeBalls = 0;
-        private double _orviBalls = 0;
+        private double _covidPercent = 0; 
+        private double _grippePercent = 0;
+        private double _orviPercent = 0;
 
         /// <summary>
         /// Set Balls
@@ -26,122 +26,131 @@ namespace CovidRecognitionSystem.DAL.Repositories
         {
             if (qIndex == 0)
             {
-                _covidBalls = 0;
-                _grippeBalls = 0;
-                _orviBalls = 0;
+                _covidPercent = 0;
+                _grippePercent = 0;
+                _orviPercent = 0;
             }
 
-            _covidBalls += Questions[qIndex].AnsverPercentsPair[key][CovidIndex];
-            _grippeBalls += Questions[qIndex].AnsverPercentsPair[key][GrippeIndex];
-            _orviBalls += Questions[qIndex].AnsverPercentsPair[key][OrviIndex];
+            switch (Questions[qIndex].AnsverPercentsPair[key])
+            {
+                case Disease.Covid:
+                    _covidPercent += CovidAddPercent;
+                    break;
+                case Disease.Grippe:
+                    _grippePercent += GrippeAddPercent;
+                    break;
+                case Disease.ORVI:
+                    _orviPercent += OrviAddPersent;
+                    break;
+            }
         }
 
-        public double GetCovidChance() => Math.Round(_covidBalls / Questions.Count, 2);
-        public double GetGrippeChance() => Math.Round(_grippeBalls / Questions.Count, 2);
-        public double GetOrviChance() => Math.Round(_orviBalls / Questions.Count, 2);
+        public double GetCovidChance() => _covidPercent; //получение результата в процентах
+        public double GetGrippeChance() => _grippePercent;
+        public double GetOrviChance() => _orviPercent;
 
         public List<Question> Questions { get; } = new List<Question>
         {
             new Question(
                 "1. Какой ваш возраст?",
-                new Dictionary<string, int[]>
+                new Dictionary<string, Disease>
                 {
-                    { "до 12 лет", new int[]{60, 10, 70} },
-                    { "12-18 лет", new int[]{70, 20, 10} },
-                    { "18-35 лет", new int[]{50, 50, 10} },
-                    { "35-55 лет", new int[]{40, 10, 70} },
-                    { "55+ лет", new int[]{10, 10, 70} }
+                    { "до 12 лет", Disease.Covid },
+                    { "12-18 лет", Disease.ORVI },
+                    { "18-35 лет", Disease.Grippe },
+                    { "35-55 лет", Disease.Covid },
+                    { "55+ лет", Disease.Covid }
                 }),
 
             new Question(
                 "2. Есть ли у вас: бронхиальная астма, сахарный диабет, артериальная гипертензия, сердечно-сосудистые заболевания?",
-                new Dictionary<string, int[]>
+                new Dictionary<string, Disease>
                 {
-                    { "Да", new int[]{ 5, 5, 80 } },
-                    { "Нет", new int[]{0, 0, 0} }
+                    { "Да", Disease.Covid },
+                    { "Нет", Disease.Nothing }
                 }),
 
             new Question(
                 "3. Как долго вы чувствуете недомогание?",
-                new Dictionary<string, int[]>
+                new Dictionary<string, Disease>
                 {
-                    { "2-7 дней", new int[]{ 25, 25, 50 } },
-                    { "7-10 дней", new int[]{ 25, 50, 25 } },
-                    { "7-14 дней", new int[]{ 25, 25, 50 } }
+                    { "2-7 дней", Disease.ORVI },
+                    { "7-10 дней", Disease.Grippe },
+                    { "7-14 дней", Disease.Covid }
                 }),
 
             new Question(
                 "4. Чувствуете ли вы улучшение самочувствия?",
-                new Dictionary<string, int[]>
+                new Dictionary<string, Disease>
                 {
-                    { "Да", new int[]{10, 10, 10} }, // подставила рандомные данные
-                    { "Нет", new int[]{10, 10, 10} }
+                    { "Да", Disease.ORVI }, // подставила рандомные данные
+                    { "Нет", Disease.Nothing }
                 }),
 
             new Question(
                 "5. Были ли в местах массового скопления людей? Бывали ли вы в зарубежных странах? Контактировали ли вы с зараженными?",
-                new Dictionary<string, int[]>
+                new Dictionary<string, Disease>
                 {
-                    { "Да", new int[]{ 20, 10, 70 } },
-                    { "Нет", new int[]{ 10, 10, 10 } }
+                    { "Да", Disease.Covid },
+                    { "Нет", Disease.Nothing}
                 }),
 
             new Question(
                 "6. Давно ли?",
-                new Dictionary<string, int[]>
+                new Dictionary<string, Disease>
                 {
-                    { "1-3 дня", new int[]{ 10, 10, 10 } },
-                    { "5 дней", new int[]{ 20, 10, 30 } },
-                    { "7-14 дней", new int[]{ 20, 10, 80 } }
+                    { "1-3 дня", Disease.ORVI },
+                    { "5 дней", Disease.Nothing },
+                    { "7-14 дней", Disease.Covid }
                 }),
 
             new Question(
                 "7. Наблюдалась ли у вас температура?",
-                new Dictionary<string, int[]>
+                new Dictionary<string, Disease>
                 {
-                    { "До 37", new int[]{ 0, 0, 0 } },
-                    { "В первый день болезни 38+", new int[]{ 20, 50, 10 } },
-                    { "37-37.3 в течении длительного времени до 2 недель", new int[]{ 20, 10, 90 } },
-                    { "Иногда скачки", new int[]{ 50, 50, 10 } },
-                    { "1-5 дней 37-37.3, а затем 38 и выше", new int[]{ 20, 10, 90 } },
-                    { "Не наблюдается", new int[]{ 85, 10, 20 } }
+                    { "До 37", Disease.ORVI },
+                    { "В первый день болезни 38+", Disease.Grippe },
+                    { "37-37.3 в течении длительного времени до 2 недель", Disease.Covid },
+                    { "Иногда скачки", Disease.Covid },
+                    { "1-5 дней 37-37.3, а затем 38 и выше", Disease.Grippe },
+                    { "Не наблюдается", Disease.ORVI }
                 }),
 
             new Question(
                 "8. Есть ли у вас кашель?",
-                new Dictionary<string, int[]>
+                new Dictionary<string, Disease>
                 {
-                    { "Да, продуктивный с мокротой", new int[]{ 90, 10, 10 } },
-                    { "Да, сухой", new int[]{ 20, 90, 70 } },
-                    { "Да, сухой, но непродуктивный кашель", new int[]{ 20, 70, 90 } },
-                    { "Нет", new int[]{ 80, 10, 10 } }
+                    { "Да, продуктивный с мокротой", Disease.ORVI },
+                    { "Да, сухой", Disease.Grippe },
+                    { "Да, сухой, но непродуктивный кашель", Disease.Covid },
+                    { "Нет", Disease.Nothing }
                 }),
 
             new Question(
                 "9. Обильные слизистые выделения?",
-                new Dictionary<string, int[]>
+                new Dictionary<string, Disease>
                 {
-                    { "Да", new int[]{ 90, 10, 10 } },
-                    { "Да, но в небольшом количестве", new int[]{ 90, 70, 10 } },
-                    { "Нет", new int[]{ 10, 50, 50 } }
+                    { "Да", Disease.ORVI },
+                    { "Да, но в небольшом количестве", Disease.Grippe },
+                    { "Нет", Disease.Covid }
                 }),
 
             new Question(
                 "10. Есть ли у вас что-то из перечисленного: диарея, сыпь на коже(крапивница), потеря обоняния, " +
                 "изменение вкуса, одышка или трудности с дыханием, конъюнктевит, бессоница?",
-                new Dictionary<string, int[]>
+                new Dictionary<string, Disease>
                 {
-                    { "Да", new int[]{ 20, 10, 90 } },
-                    { "Нет", new int[]{ 30, 30, 30 } }
+                    { "Да", Disease.Covid },
+                    { "Нет", Disease.Nothing }
                 }),
 
             new Question(
                 "11. Есть ли у вас головная боль?",
-                new Dictionary<string, int[]>
+                new Dictionary<string, Disease>
                 {
-                    { "Да", new int[]{ 20, 10, 90 } },
-                    { "Да, с сильными приступами", new int[]{ 20, 10, 90 } },
-                    { "Нет", new int[]{ 30, 30, 30 } }
+                    { "Да", Disease.Grippe },
+                    { "Да, с сильными приступами", Disease.Covid },
+                    { "Нет", Disease.ORVI }
                 })
         };
     }

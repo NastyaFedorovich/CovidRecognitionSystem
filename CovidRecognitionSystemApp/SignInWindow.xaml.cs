@@ -22,12 +22,13 @@ namespace CovidRecognitionSystemApp
     /// </summary>
     public partial class SignInWindow : Window
     {
-        private readonly IDoctorRepository _doctorRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public SignInWindow()
+        public SignInWindow(IUnitOfWork unitOfWork)
         {
-            _doctorRepository = new DoctorRepository(new AppDbContext());
             InitializeComponent();
+
+            _unitOfWork = unitOfWork;
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -40,20 +41,17 @@ namespace CovidRecognitionSystemApp
 
         private void SignInButton_Click(object sender, RoutedEventArgs e)
         {
-            var login = LoginTB.Text;
-            var password = PasswordTB.Text; 
-
-            var user = _doctorRepository.GetAll().FirstOrDefault(doctor => doctor.Login.Equals(login) && doctor.Password.Equals(password));
-
-            if (user != null)
+            try
             {
-                MenuWindow menuWindow = new MenuWindow();
+                _unitOfWork.AuthManager.SignIn(LoginTB.Text, PasswordTB.Text);
+
+                MenuWindow menuWindow = new MenuWindow(_unitOfWork);
                 menuWindow.Show();
                 Close();
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Неверный логин или пароль");
+                MessageBox.Show(ex.Message);
             }
         }
     }
