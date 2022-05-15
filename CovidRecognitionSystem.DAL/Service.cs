@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CovidRecognitionSystem.DAL
 {
-    public class Service
+    public static class Service
     {
         public static string GetDiseaseName(Disease disease)
         {
@@ -25,6 +25,44 @@ namespace CovidRecognitionSystem.DAL
             var enumItem = type.GetField(status.ToString());
             var attribute = enumItem?.GetCustomAttribute<DisplayAttribute>();
             return attribute?.Name;
+        }
+
+        public static Disease GetDiseaseFromStr(string strDisease)
+        {
+            switch (strDisease)
+            {
+                case "Грипп":
+                    return Disease.Grippe;
+                case "ОРВИ":
+                    return Disease.ORVI;
+                case "Covid-19":
+                    return Disease.Covid;
+            }
+
+            if (!Enum.TryParse(strDisease, out Disease disease))
+            {
+                throw new Exception("Such disease is not exist");
+            }
+            return disease;
+        }
+
+        public static PatientStatus GetPatientStatusFromStr(string strStatus)
+        {
+            switch (strStatus)
+            {
+                case "Здоров":
+                    return PatientStatus.Healthy;
+                case "Болен":
+                    return PatientStatus.Ill;
+                case "Мёртв":
+                    return PatientStatus.Dead;
+            }
+
+            if (!Enum.TryParse(strStatus, out PatientStatus status))
+            {
+                throw new Exception("Such patient status is not exist");
+            }
+            return status;
         }
     }
 }

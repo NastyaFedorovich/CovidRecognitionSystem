@@ -24,12 +24,15 @@ namespace CovidRecognitionSystemApp
     public partial class MenuWindow : Window
     {
         private int _questionIndex;
-        private Patient _patient;
+        public Patient CurrentPatient;
+        public Disease _computerDiagnosis;
 
         QuestionRepository _questionRepository;
         IUnitOfWork _unitOfWork;
 
         private List<RadioButton> _currentButtons;
+
+        public bool IsPatientExists = false;
 
         public MenuWindow(IUnitOfWork unitOfWork)
         {
@@ -37,10 +40,15 @@ namespace CovidRecognitionSystemApp
 
             _questionIndex = 0;
             _questionRepository = new QuestionRepository();
-
             _unitOfWork = unitOfWork;
 
             _currentButtons = new List<RadioButton>();
+
+            foreach (Disease disease in Enum.GetValues(typeof(Disease)))
+                DiseasesComboBox.Items.Add(Service.GetDiseaseName(disease));
+
+            foreach (PatientStatus status in Enum.GetValues(typeof(PatientStatus)))
+                PatientStatusComboBox.Items.Add(Service.GetPatientStatusName(status));
         }
 
         private void TrackingDataButton_Click(object sender, RoutedEventArgs e)
@@ -56,20 +64,18 @@ namespace CovidRecognitionSystemApp
             }
         }
 
-        public void AddTrackingData(Patient patient)
+        public void AddTrackingData()
         {
             try
             {
-                _patient = patient;
-
-                SickLeave sickLeave = _unitOfWork.SickLeaveRepository.GetAll().FirstOrDefault(s => s.PatientId == patient.Id);
+                SickLeave sickLeave = _unitOfWork.SickLeaveRepository.GetAll().FirstOrDefault(s => s.PatientId == CurrentPatient.Id);
                 Diagnosis diagnosis = _unitOfWork.DiagnosisRepository.GetAll().FirstOrDefault(d => d.SickLeaveId == sickLeave.Id);
 
-                FioLabel.Content += $"{patient.Surname} {patient.Name} {patient.MiddleName}";
-                BirthDateLabel.Content += patient.BirthDate.ToString("d");
-                DoctorDiagnosisLabel.Content += Service.GetDiseaseName(diagnosis.DoctorDiagnosis);
-                ComputerDiagnosisLabel.Content += Service.GetDiseaseName(diagnosis.ComputerDiagnosis);
-                PatientConditionLabel.Content += Service.GetPatientStatusName(sickLeave.PatientStatus);
+                FioLabel.Content = $"ФИО пациента: {CurrentPatient.Surname} {CurrentPatient.Name} {CurrentPatient.MiddleName}";
+                BirthDateLabel.Content = $"Дата рождения: {CurrentPatient.BirthDate.ToString("d")}";
+                DoctorDiagnosisLabel.Content = $"Диагноз доктора: {Service.GetDiseaseName(diagnosis.DoctorDiagnosis)}";
+                ComputerDiagnosisLabel.Content = $"Диагноз компьютера: {Service.GetDiseaseName(diagnosis.ComputerDiagnosis)}";
+                PatientConditionLabel.Content = $"Нынешнее состояние пациента: {Service.GetPatientStatusName(sickLeave.PatientStatus)}";
             }
             catch (Exception ex)
             {
@@ -116,6 +122,17 @@ namespace CovidRecognitionSystemApp
                 PreventionPanel.Visibility = Visibility.Hidden;
                 FonImg.Visibility = Visibility.Hidden;
 
+                AddDoctorDiagnosisButton.IsEnabled = true;
+                NextButton.Visibility = Visibility.Visible;
+
+                CovidChanceLabel.Visibility = Visibility.Hidden;
+                GrippeChanceLabel.Visibility = Visibility.Hidden;
+                OrviChanceLabel.Visibility = Visibility.Hidden;
+                SetComputerDiagnosisLabel.Visibility = Visibility.Hidden;
+                SetDoctorDiagnosisLabel.Visibility = Visibility.Hidden;
+                DiseasesComboBox.Visibility = Visibility.Hidden;
+                AddDoctorDiagnosisButton.Visibility = Visibility.Hidden;
+
                 _questionIndex = 0;
 
                 ViewQuestion();
@@ -139,13 +156,21 @@ namespace CovidRecognitionSystemApp
                     QuestionText.Text = "";
                     RadioButtonsPanel.Children.Clear();
 
+                    _computerDiagnosis = _questionRepository.GetDiagnosis();
+
                     CovidChanceLabel.Content = $"Вероятность ковида: {_questionRepository.GetCovidChance()}%";
                     GrippeChanceLabel.Content = $"Вероятность гриппа: {_questionRepository.GetGrippeChance()}%";
                     OrviChanceLabel.Content = $"Вероятность ОРВИ: {_questionRepository.GetOrviChance()}%";
+                    SetComputerDiagnosisLabel.Content = $"Диагноз компьютера: {Service.GetDiseaseName(_computerDiagnosis)}";
+                    SetDoctorDiagnosisLabel.Content = $"Диагноз врача: ";
 
                     CovidChanceLabel.Visibility = Visibility.Visible;
                     GrippeChanceLabel.Visibility = Visibility.Visible;
                     OrviChanceLabel.Visibility = Visibility.Visible;
+                    SetComputerDiagnosisLabel.Visibility = Visibility.Visible;
+                    SetDoctorDiagnosisLabel.Visibility = Visibility.Visible;
+                    DiseasesComboBox.Visibility = Visibility.Visible;
+                    AddDoctorDiagnosisButton.Visibility = Visibility.Visible;
                 }
                 else
                 {
@@ -209,13 +234,81 @@ namespace CovidRecognitionSystemApp
                 _unitOfWork.CommentRepository.Create(new DoctorComment
                 {
                     DoctorId = _unitOfWork.AuthManager.GetSignedInUser().Id,
-                    PatientId = _patient.Id,
+                    PatientId = CurrentPatient.Id,
                     CommentDateTime = DateTime.Now,
                     Text = DoctorCommentTextBox.Text,
                 });
 
                 MessageBox.Show("Комментарий добавлен!");
                 DoctorCommentTextBox.Text = "";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void AddDoctorDiagnosisButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (DiseasesComboBox.SelectedItem == null)
+                    throw new Exception("Выберите заболевание!");
+
+                if (IsPatientExists)
+                {
+                    _unitOfWork.DiagnosisRepository.Create(new Diagnosis
+                    {
+                        SickLeaveId = _unitOfWork.SickLeaveRepository.GetAll().FirstOrDefault(s => s.PatientId == CurrentPatient.Id).Id,
+                        ComputerDiagnosis = _computerDiagnosis,
+                        DoctorDiagnosis = Service.GetDiseaseFromStr(DiseasesComboBox.SelectedItem.ToString()),
+                        Date = DateTime.Now
+                    });
+                }
+                else
+                {
+                    _unitOfWork.SickLeaveRepository.Create(new SickLeave
+                    {
+                        PatientId = CurrentPatient.Id,
+                        PatientStatus = PatientStatus.Ill
+                    });
+                    _unitOfWork.DiagnosisRepository.Create(new Diagnosis
+                    {
+                        SickLeaveId = _unitOfWork.SickLeaveRepository.GetAll().FirstOrDefault(s => s.PatientId == CurrentPatient.Id).Id,
+                        ComputerDiagnosis = _computerDiagnosis,
+                        DoctorDiagnosis = Service.GetDiseaseFromStr(DiseasesComboBox.SelectedItem.ToString()),
+                        Date = DateTime.Now
+                    });
+                }
+
+                MessageBox.Show("Диагноз сохранён!");
+                AddDoctorDiagnosisButton.IsEnabled = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void ChangeConditionButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (PatientStatusComboBox.SelectedItem == null)
+                    throw new Exception("Выберите статус пациента!");
+
+                SickLeave sickLeave = _unitOfWork.SickLeaveRepository.GetAll().FirstOrDefault(s => s.PatientId == CurrentPatient.Id);
+
+                if (sickLeave.PatientStatus == PatientStatus.Dead)
+                    if (MessageBox.Show("Вы уверены, что хотите изменить статус мёртвого пациента?", "Внимание!", MessageBoxButton.OKCancel) != MessageBoxResult.OK)
+                        return;
+
+                sickLeave.PatientStatus = Service.GetPatientStatusFromStr(PatientStatusComboBox.SelectedItem.ToString());
+
+                _unitOfWork.SickLeaveRepository.Update(sickLeave);
+
+                MessageBox.Show("Статус изменён!");
+                PatientConditionLabel.Content = $"Нынешнее состояние пациента: {Service.GetPatientStatusName(sickLeave.PatientStatus)}";
             }
             catch (Exception ex)
             {

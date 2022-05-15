@@ -66,14 +66,19 @@ namespace CovidRecognitionSystemApp
                 if (!DateTime.TryParse(NewPatientBirthDateTextBox.Text, out DateTime birthDate))
                     throw new Exception("Дата рождения не соответствует нужному формату!");
 
-                _unitOfWork.PatientRepository.Create(new Patient
+                Patient patient = new Patient
                 {
                     Surname = NewPatientSurnameTextBox.Text,
                     Name = NewPatientNameTextBox.Text,
                     MiddleName = NewPatientMiddleNameTextBox.Text,
                     BirthDate = birthDate,
                     Address = PatientAddressTextBox.Text
-                });
+                };
+
+                _unitOfWork.PatientRepository.Create(patient);
+
+                _owner.CurrentPatient = patient;
+                _owner.IsPatientExists = false;
 
                 DialogResult = true;
                 Close();
@@ -101,13 +106,24 @@ namespace CovidRecognitionSystemApp
                     p.MiddleName == ExistsPatientMiddleNameTextBox.Text &&
                     p.BirthDate == birthDate);
 
+                _owner.CurrentPatient = patient;
+
                 if (patient == null) throw new Exception("Пациент не найден!");
 
                 if (_isTraking)
                 {
-                    _owner.AddTrackingData(patient);
+                    _owner.AddTrackingData();
+                }
+                else
+                {
+                    if (_unitOfWork.SickLeaveRepository.GetAll().FirstOrDefault(s => s.PatientId == patient.Id).PatientStatus == PatientStatus.Dead)
+                    {
+                        MessageBox.Show("Переобследование невозможно по причине смерти пациента");
+                        return;
+                    }
                 }
 
+                _owner.IsPatientExists = true;
                 DialogResult = true;
                 Close();
             }

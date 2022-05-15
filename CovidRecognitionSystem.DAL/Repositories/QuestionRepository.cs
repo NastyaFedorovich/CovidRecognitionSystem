@@ -45,9 +45,20 @@ namespace CovidRecognitionSystem.DAL.Repositories
             }
         }
 
-        public double GetCovidChance() => _covidPercent; //получение результата в процентах
-        public double GetGrippeChance() => _grippePercent;
-        public double GetOrviChance() => _orviPercent;
+        public double GetCovidChance() => Math.Round(_covidPercent, 2); //получение результата в процентах
+        public double GetGrippeChance() => Math.Round(_grippePercent, 2);
+        public double GetOrviChance() => Math.Round(_orviPercent, 2);
+        public Disease GetDiagnosis()
+        {
+            double maxPercent =  new List<double> { _covidPercent, _grippePercent, _orviPercent}.Max();
+
+            if (maxPercent == _covidPercent)
+                return Disease.Covid;
+            else if (maxPercent == _grippePercent)
+                return Disease.Grippe;
+            else
+                return Disease.ORVI;
+        }
 
         public List<Question> Questions { get; } = new List<Question>
         {

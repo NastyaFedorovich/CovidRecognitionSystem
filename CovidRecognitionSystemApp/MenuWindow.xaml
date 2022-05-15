@@ -10,9 +10,9 @@
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Background" Value="SlateBlue"/>
-            <Setter Property="Height" Value="40"/>
-            <Setter Property="Width" Value="360"/>
-            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Width" Value="430"/>
+            <Setter Property="FontSize" Value="25"/>
             <Setter Property="Foreground" Value="AliceBlue"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
         </Style>
@@ -30,7 +30,7 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Button x:Name="StartDiagnosticButton" Content="Начать диагностику" Margin="0,200,0,0" Click="StartDiagnosticButton_Click">
+        <Button x:Name="StartDiagnosticButton" Content="Начать диагностику" Margin="0,190,0,0" Click="StartDiagnosticButton_Click">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="5"/>
@@ -46,7 +46,7 @@
             </Button.Resources>
         </Button>
 
-        <Button x:Name="TreatmentButton" Content="Лечение" Margin="0,340,0,0" Click="TreatmentButton_Click">
+        <Button x:Name="TreatmentButton" Content="Лечение" Margin="0,350,0,0" Click="TreatmentButton_Click">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="5"/>
@@ -54,7 +54,7 @@
             </Button.Resources>
         </Button>
 
-        <Button x:Name="PreventionButton" Content="Профилактика" Margin="0,410,0,0" Click="PreventionButton_Click">
+        <Button x:Name="PreventionButton" Content="Профилактика" Margin="0,430,0,0" Click="PreventionButton_Click">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="5"/>
@@ -62,7 +62,7 @@
             </Button.Resources>
         </Button>
 
-        <Button x:Name="ExitButton" Content="Выход" Margin="0,480,0,0" Click="ExitButton_Click">
+        <Button x:Name="ExitButton" Content="Выход" Margin="0,510,0,0" Click="ExitButton_Click">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="5"/>
@@ -71,16 +71,16 @@
         </Button>
 
         <StackPanel x:Name="StartDiagnosticPanel" Background="LightSteelBlue" Visibility="Hidden" Grid.ColumnSpan="2" Margin="714,0,6,0">
-            <Label Content="Диагностика" FontSize="25" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top"/>
-            <TextBlock x:Name="QuestionText" TextWrapping="Wrap" Margin="70 30 70 0" FontSize="18" Text="Question text"/>
+            <Label Content="Диагностика" FontSize="30" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top"/>
+            <TextBlock x:Name="QuestionText" TextWrapping="Wrap" Margin="70 30 70 0" FontSize="20" Text="Question text"/>
             <StackPanel x:Name="RadioButtonsPanel" Margin="70 20 70 0"/>
 
-            <Label x:Name="CovidChanceLabel" FontSize="20" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
-            <Label x:Name="GrippeChanceLabel" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden"/>
-            <Label x:Name="OrviChanceLabel" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden"/>
+            <Label x:Name="CovidChanceLabel" Content="label 1" FontSize="25" Margin="70,0,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+            <Label x:Name="GrippeChanceLabel" Content="label 2" FontSize="25" Margin="70,0,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+            <Label x:Name="OrviChanceLabel" Content="label 3" FontSize="25" Margin="70,0,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
             
             <Button x:Name="NextButton" Content="Следующий вопрос" Margin="0,0,0,0" 
-                    Click="NextButton_Click" Width="220">
+                    Click="NextButton_Click" Width="300">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="5"/>
@@ -88,23 +88,46 @@
                 </Button.Resources>
             </Button>
 
+            <Label x:Name="SetComputerDiagnosisLabel" Content="computer" FontSize="25" Margin="70,0,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+            <Label x:Name="SetDoctorDiagnosisLabel" Content="doctor" FontSize="25" Margin="70,20,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+            <ComboBox x:Name="DiseasesComboBox" FontSize="25" Margin="70 0 0 0" Width="300" HorizontalAlignment="Left" Visibility="Hidden"></ComboBox>
+            <Button x:Name="AddDoctorDiagnosisButton" Content="Записать диагноз" Margin="70,20,0,0" 
+                    Click="AddDoctorDiagnosisButton_Click" Width="270" HorizontalAlignment="Left" Visibility="Hidden">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
         </StackPanel>
 
         <StackPanel x:Name="TrackingDataPanel" Grid.Column="1" Background="LightSteelBlue" Visibility="Hidden">
-            <Label Content="Отслеживание данных пациента" FontSize="25" HorizontalAlignment="Center" Margin="0,60,0,0" VerticalAlignment="Top"/>
+            <Label Content="Отслеживание данных пациента" FontSize="30" HorizontalAlignment="Center" Margin="0,60,0,0" VerticalAlignment="Top"/>
 
-            <Label x:Name="FioLabel" Content="ФИО пациента: " FontSize="25" Margin="50,40,0,0" VerticalAlignment="Top"/>
-            <Label x:Name="BirthDateLabel" Content="Дата рождения: " FontSize="25" Margin="50,00,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="FioLabel" Content="fio" FontSize="25" Margin="50,40,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="BirthDateLabel" Content="birthdate" FontSize="25" Margin="50,00,0,0" VerticalAlignment="Top"/>
             
-            <Label x:Name="DoctorDiagnosisLabel" Content="Диагноз врача: " FontSize="25" Margin="50,20,0,0" VerticalAlignment="Top"/>
-            <Label x:Name="ComputerDiagnosisLabel" Content="Диагноз компьютера: " FontSize="25" Margin="50,10,0,0" VerticalAlignment="Top"/>
-            <Label x:Name="PatientConditionLabel" Content="Нынешнее состояние пациента: " FontSize="25" Margin="50,20,0,0" VerticalAlignment="Top"/>
-
-            <Label Content="Комментарий:" FontSize="25" Margin="50,30,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="DoctorDiagnosisLabel" Content="doctor diagnoz" FontSize="25" Margin="50,20,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="ComputerDiagnosisLabel" Content="computor diagnos" FontSize="25" Margin="50,10,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="PatientConditionLabel" Content="condition" FontSize="25" Margin="50,20,0,0" VerticalAlignment="Top"/>
+            
+            <Grid Margin="0 10 0 0">
+                <Button x:Name="ChangeConditionButton" Content="Изменить состояние" Margin="50,0,0,0" 
+                    Click="ChangeConditionButton_Click" Width="300" HorizontalAlignment="Left">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <ComboBox x:Name="PatientStatusComboBox" FontSize="25" Margin="0 0 50 0" Width="250" HorizontalAlignment="Right" Visibility="Visible"></ComboBox>
+            </Grid>
+            
+            <Label Content="Комментарий:" FontSize="25" Margin="50,20,0,0" VerticalAlignment="Top"/>
             <TextBox x:Name="DoctorCommentTextBox" FontSize="25" Margin="50,0,50,0" Height="120"></TextBox>
 
             <Button x:Name="SaveCommentButton" Content="Сохранить комментарий" Margin="50,30,0,0" 
-                    Click="SaveCommentButton_Click" Width="270" HorizontalAlignment="Left">
+                    Click="SaveCommentButton_Click" Width="330" HorizontalAlignment="Left">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="5"/>
@@ -114,8 +137,8 @@
         </StackPanel>
         
         <StackPanel x:Name="TreatmentPanel" Grid.Column="1" Background="LightSteelBlue" Visibility="Hidden">
-            <Label Content="Лечение" FontSize="25" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top"/>
-            <TextBlock TextWrapping="Wrap" Margin="70 30 70 0" FontSize="18">
+            <Label Content="Лечение" FontSize="30" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top"/>
+            <TextBlock TextWrapping="Wrap" Margin="70 30 70 0" FontSize="25">
                 1.	Витамин Д<LineBreak />
 2.	Витамин С<LineBreak />
 3.	Цинк<LineBreak /> 
@@ -131,8 +154,8 @@
         </StackPanel>
         
         <StackPanel x:Name="PreventionPanel" Grid.Column="1" Background="LightSteelBlue" Visibility="Hidden">
-            <Label Content="Профилактика" FontSize="25" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top"/>
-            <TextBlock TextWrapping="Wrap" Margin="70 30 70 0" FontSize="18">
+            <Label Content="Профилактика" FontSize="30" HorizontalAlignment="Center" Margin="0,70,0,0" VerticalAlignment="Top"/>
+            <TextBlock TextWrapping="Wrap" Margin="70 30 70 0" FontSize="24">
                 1.	Прививка <LineBreak />
 2.	Увеличить кол продуктов содержащих витамин С<LineBreak />
 3.	Тщательно мыть руки с мылом и обрабатывать антисептиком<LineBreak />
